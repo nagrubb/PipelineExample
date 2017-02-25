@@ -24,6 +24,7 @@ pipeline {
         sh 'git merge origin/${BRANCH_NAME}'
         sh 'git remote rm origin'
         sh 'git remote add origin "git@github.com:silent-snowman/PipelineExample.git"'
+        sh 'git pull'
         sh 'git push'
       }
     }
