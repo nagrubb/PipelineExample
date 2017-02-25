@@ -20,8 +20,8 @@ pipeline {
     stage('Merge') {
       when {
         expression {
-          echo env.BRANCH_NAME
-          return env.BRANCH_NANE == 'origin/develop'
+          GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+          return GIT_BRANCH == 'origin/develop' 
         }
       }
       agent { label 'master' }
