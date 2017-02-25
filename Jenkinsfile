@@ -15,9 +15,11 @@ pipeline {
     stage('Build') {
       agent { label 'ubuntu' }
       steps {
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
         sh './build.sh'
         archiveArtifacts artifacts: 'output.bin'
         stash 'output.bin'
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Successfully built on Jenkins CI', state: 'SUCCESS']]]])
       }
     }
     stage('Test') {
@@ -25,7 +27,6 @@ pipeline {
       steps {
         unstash 'output.bin'
         stash 'output2.bin'
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Nuxeo CI', state: 'PENDING']]]])
       }
     }
   }
