@@ -4,7 +4,6 @@ pipeline {
     stage('Build') {
       agent { label 'ubuntu' }
       steps {
-        sh 'echo "here"'
         sh './build.sh'
         echo 'Hello Build Machine'
       }
@@ -12,6 +11,7 @@ pipeline {
     stage('Test') {
       agent { label 'ubuntu' }
       steps {
+        sh './test.sh'
         echo 'Hello Test Machine'
       }
     }
