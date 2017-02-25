@@ -21,8 +21,9 @@ pipeline {
       agent { label 'master' }
       steps {
         sh 'git remote rm origin'
+        sh 'git remote rm origin1'
         sh 'git remote add origin "git@github.com:silent-snowman/PipelineExample.git"'
-        sh 'git checkout ${BRANCH_NAME}'
+        sh 'git checkout origin/${BRANCH_NAME}'
         sh 'git checkout develop'
         sh 'git merge ${BRANCH_NAME}'
         sh 'git pull'
