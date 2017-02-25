@@ -1,19 +1,22 @@
 pipeline {
-  agent { label 'master' }
+  agent none
   stages {
-    stage('build') {
+    stage('Build') {
+      agent { label 'master' }
       steps {
-        sh 'npm --version'
+        echo 'Hello Build Machine'
       }
     }
-    stage('test') {
+    stage('Test') {
+      agent { label 'master' }
       steps {
-        sh 'npm --version'
+        echo 'Hello Test Machine'
       }
     }
-    stage('package') {
+    stage('Package') {
+      agent { label 'master' }
       steps {
-        sh 'npm --version'
+        echo 'Hello Package Machine'
       }
     }
   }
