@@ -22,7 +22,8 @@ pipeline {
       steps {
         sh 'git checkout develop'
         sh 'git merge origin/${BRANCH_NAME}'
-        sh 'git config user.name "jenkins"'
+        sh 'git remote rm origin'
+        sh 'git remote add origin "git@github.com:silent-snowman/PipelineExample.git"'
         sh 'git push'
       }
     }
