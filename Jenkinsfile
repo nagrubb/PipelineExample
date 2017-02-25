@@ -9,7 +9,7 @@ pipeline {
       }
     }
     stage('Test') {
-      agent { label 'ubuntu' }
+      agent { label 'x64' }
       steps {
         sh './test.sh'
         echo 'Hello Test Machine'
