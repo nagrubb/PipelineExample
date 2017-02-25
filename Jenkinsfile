@@ -2,7 +2,7 @@ pipeline {
   agent none
   stages {
     stage('Build') {
-      agent { label 'master' }
+      agent { label 'ubuntu' }
       steps {
         echo 'Hello Build Machine'
       }
