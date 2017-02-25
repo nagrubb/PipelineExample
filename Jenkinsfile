@@ -23,7 +23,7 @@ pipeline {
         sh 'git checkout develop'
         sh 'git merge origin/${BRANCH_NAME}'
         sh 'git commit -am "Merging local branch to develop"'
-        sh 'git push origin develop'
+        sh 'git push'
       }
     }
   }
