@@ -20,8 +20,7 @@ pipeline {
     stage('Merge') {
       when {
         expression {
-          echo "X${env.BRANCH_NAME}X"
-          return env.BRANCH_NANE == 'develop'
+          return env.BRANCH_NAME == 'develop'
         }
       }
       agent { label 'master' }
