@@ -22,6 +22,7 @@ pipeline {
       steps {
         sh 'git checkout develop'
         sh 'git merge origin/${BRANCH_NAME}'
+        sh 'git config user.name "jenkins"'
         sh 'git push'
       }
     }
