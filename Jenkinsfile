@@ -20,10 +20,10 @@ pipeline {
     stage('Merge') {
       agent { label 'master' }
       steps {
-        sh 'git checkout develop'
-        sh 'git merge origin/${BRANCH_NAME}'
         sh 'git remote rm origin'
         sh 'git remote add origin "git@github.com:silent-snowman/PipelineExample.git"'
+        sh 'git checkout develop'
+        sh 'git merge origin/${BRANCH_NAME}'
         sh 'git pull'
         sh 'git push'
       }
