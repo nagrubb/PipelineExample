@@ -1,6 +1,17 @@
 pipeline {
   agent none
   stages {
+    stage('Tag') {
+      when {
+        expression {
+          return env.BRANCH_NAME == 'release/1.0'
+        }
+      }
+      agent { label 'master' }
+      steps {
+        echo 'Tagging Release Build'
+      }
+    }
     stage('Build') {
       agent { label 'ubuntu' }
       steps {
