@@ -18,13 +18,13 @@ pipeline {
       }
     }
     stage('Merge') {
+      when {
+        expression {
+          return env.BRANCH_NANE == 'develop'
+        }
+      }
       agent { label 'master' }
       steps {
-        if (env.BRANCH_NANE == 'develop') {
-          echo 'on develop'
-        } else {
-          echo 'not on develop'
-        }
         step([$class: 'WsCleanup'])
         checkout scm
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '681c55dd-3c24-4009-a0b5-70a52055b95f', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
