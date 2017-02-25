@@ -5,7 +5,7 @@ pipeline {
       agent { label 'ubuntu' }
       steps {
         sh './build.sh'
-        echo 'Hello Build Machine'
+        archive output.bin  
       }
     }
     stage('Test') {
