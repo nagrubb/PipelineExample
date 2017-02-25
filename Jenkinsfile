@@ -21,6 +21,7 @@ pipeline {
       agent { label 'master' }
       steps {
         step([$class: 'WsCleanup'])
+        scm checkout
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '681c55dd-3c24-4009-a0b5-70a52055b95f', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
           sh("git config credential.username ${env.GIT_USERNAME}")
           sh("git config credential.helper '!echo password=\$GIT_PASSWORD; echo'")
