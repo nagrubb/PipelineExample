@@ -5,7 +5,7 @@ pipeline {
       agent { label 'ubuntu' }
       steps {
         sh './build.sh'
-        archiveArtifacts artifaces: 'output.bin'
+        archiveArtifacts artifacts: 'output.bin'
       }
     }
     stage('Test') {
