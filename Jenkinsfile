@@ -11,6 +11,7 @@ pipeline {
     stage('Test') {
       agent { label 'x64' }
       steps {
+        unstash 'output.bin'
         sh './test.sh'
         echo 'Hello Test Machine'
       }
