@@ -26,6 +26,9 @@ pipeline {
           sh("git config credential.username ${env.GIT_USERNAME}")
           sh("git config credential.helper '!echo password=\$GIT_PASSWORD; echo'")
           sh("GIT_ASKPASS=true git push origin --tags")
+          sh("git checkout develop")
+          sh("git merge ${env.BRANCH_NAME}")
+          sh("GIT_ASKPASS=true git push origin")
         }
       }
     }
