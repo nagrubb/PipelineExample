@@ -25,7 +25,7 @@ pipeline {
       steps {
         unstash 'output.bin'
         stash 'output2.bin'
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-test 2']])
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'The bomb, state: 'PENDING']]]])
       }
     }
   }
