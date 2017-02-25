@@ -20,7 +20,10 @@ pipeline {
     stage('Merge') {
       agent { label 'master' }
       steps {
-        git url: "git@github.com:silent-snowman/PipelineExample.git", credentialsId: '~/.ssh/id_rsa.pub', branch: develop
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '681c55dd-3c24-4009-a0b5-70a52055b95f', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+          sh("git tag -a some_tag -m 'Jenkins'")
+          sh('git push https://github.com/silent-snowman/PipelineExample.git --tags')
+        }
       }
     }
   }
