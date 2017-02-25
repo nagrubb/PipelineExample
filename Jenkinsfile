@@ -24,9 +24,10 @@ pipeline {
       agent { label 'build && x64' }
       steps {
         unstash 'output.bin'
-        sh './test.sh'
         stash 'output2.bin'
-        updateGitlabCommitStatus name: 'build', state: 'pending'
+        withGitHubCommitStatus context: "continuous-integration/jenkins/test" {
+          sh './test.sh'
+        }
       }
     }
   }
