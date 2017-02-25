@@ -17,5 +17,14 @@ pipeline {
         stash 'output2.bin'
       }
     }
+    stage('Merge') {
+      agent { label 'master' }
+      steps {
+        sh 'git checkout develop'
+        sh 'git merge env.BRANCH_NAME'
+        sh 'git commit -am "Merging local branch to develop"'
+        sh 'git push'
+      }
+    }
   }
 }
