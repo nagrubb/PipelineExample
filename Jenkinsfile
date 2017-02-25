@@ -20,14 +20,7 @@ pipeline {
     stage('Merge') {
       agent { label 'master' }
       steps {
-        sh 'git remote rm origin'
-        sh 'git remote rm origin1'
-        sh 'git remote add origin "git@github.com:silent-snowman/PipelineExample.git"'
-        sh 'git checkout develop'
-        sh 'git checkout ${BRANCH_NAME}'
-        sh 'git merge ${BRANCH_NAME}'
-        sh 'git pull'
-        sh 'git push'
+        git url: "git@github.com:silent-snowman/PipelineExample.git", credentialsId: '~/.ssh/id_rsa.pub', branch: develop
       }
     }
   }
