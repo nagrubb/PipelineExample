@@ -26,16 +26,13 @@ pipeline {
         unstash 'output.bin'
         sh './test.sh'
         stash 'output2.bin'
+        updateGitlabCommitStatus name: 'build', state: 'pending'
       }
     }
   }
   post {
     success {
-      if (env.BRANCH_NAME == 'develop') {
-        echo 'Develop Branch'
-      } else {
-        echo 'Some other branch'
-      }
+      echo 'Done!'
     }
   }
 }
