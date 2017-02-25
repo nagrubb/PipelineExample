@@ -25,9 +25,7 @@ pipeline {
       steps {
         unstash 'output.bin'
         stash 'output2.bin'
-        withGitHubCommitStatus context: "continuous-integration/jenkins/test" {
-          sh './test.sh'
-        }
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-test']])
       }
     }
   }
