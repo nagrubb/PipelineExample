@@ -28,13 +28,13 @@ pipeline {
         stash 'output2.bin'
       }
     }
-    post {
-      success {
-        if (env.BRANCH_NAME == 'develop') {
-          echo 'Develop Branch'
-        } else {
-          echo 'Some other branch'
-        }
+  }
+  post {
+    success {
+      if (env.BRANCH_NAME == 'develop') {
+        echo 'Develop Branch'
+      } else {
+        echo 'Some other branch'
       }
     }
   }
