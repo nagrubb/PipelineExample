@@ -8,7 +8,7 @@ pipeline {
       }
     }
     stage('Test') {
-      agent { label 'master' }
+      agent { label 'ubuntu' }
       steps {
         echo 'Hello Test Machine'
       }
