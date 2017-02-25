@@ -21,9 +21,9 @@ pipeline {
       agent { label 'master' }
       steps {
         sh 'git checkout develop'
-        sh 'git merge env.BRANCH_NAME'
+        sh 'git merge ${env.BRANCH_NAME}'
         sh 'git commit -am "Merging local branch to develop"'
-        sh 'git push'
+        sh 'git push origin master'
       }
     }
   }
