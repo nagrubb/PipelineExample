@@ -25,7 +25,7 @@ pipeline {
       steps {
         unstash 'output.bin'
         stash 'output2.bin'
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-test']])
+        githubNotify context: 'Notification key', description: 'This is a shorted example',  status: 'SUCCESS'
       }
     }
   }
