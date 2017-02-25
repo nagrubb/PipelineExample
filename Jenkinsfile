@@ -18,6 +18,12 @@ pipeline {
       }
     }
     stage('Merge') {
+      when {
+        expression {
+          echo ${env.BRANCH_NAME}
+          return env.BRANCH_NANE == 'develop'
+        }
+      }
       agent { label 'master' }
       steps {
         step([$class: 'WsCleanup'])
