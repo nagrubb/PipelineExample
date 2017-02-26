@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 echo "Testing..."
-robot QuickStart.rst
+/home/ubuntu/.local/bin/robot QuickStart.rst
