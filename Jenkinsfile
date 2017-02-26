@@ -1,3 +1,8 @@
+def pushTag = { tag ->
+  echo tag
+}
+
+
 node {
   currentBuild.displayName = "${currentBuild.displayName} -> bitch"
   currentBuild.description = "bebe"
