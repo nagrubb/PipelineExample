@@ -1,5 +1,5 @@
 node {
-  currentBuild.displayName = "${currentBuild.displayName} -> bitch"
+  currentBuild.displayName = "${currentBuild.displayName} -> mofo"
   currentBuild.description = "bebe"
 }
 
@@ -20,7 +20,7 @@ pipeline {
     stage('Build') {
       agent { label 'gotham && builder' }
       steps {
-        # Set GitHub Build commit status to pending
+        //Set GitHub Build commit status to pending
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -30,7 +30,7 @@ pipeline {
         archiveArtifacts artifacts: 'output.bin'
         stash includes: 'output.bin', name: 'buildOutput'
 
-        # Set GitHub Build commit status to success
+        //Set GitHub Build commit status to success
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -40,7 +40,7 @@ pipeline {
     stage('PerBuildTest') {
       agent { label 'gotham && tester' }
       steps {
-        # Set GitHub PerBuildTest commit status to pending
+        //Set GitHub PerBuildTest commit status to pending
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -49,13 +49,13 @@ pipeline {
         unstash 'buildOutput'
         sh './test.sh'
 
-        # Set GitHub PerBuildTest commit status to success
+        //Set GitHub PerBuildTest commit status to success
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
             results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
 
-        # Publish test results
+        //Publish test results
         step([$class: 'RobotPublisher', outputPath: '.', passThreshold: 0, unstableThreshold: 0, otherFiles: ""])
       }
     }
@@ -69,7 +69,9 @@ pipeline {
       steps {
         step([$class: 'WsCleanup'])
         checkout scm
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '681c55dd-3c24-4009-a0b5-70a52055b95f', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: '681c55dd-3c24-4009-a0b5-70a52055b95f',
+          usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
           sh 'git config credential.username ${env.GIT_USERNAME}'
           sh 'git config credential.helper "!echo password=\$GIT_PASSWORD; echo"'
           sh 'GIT_ASKPASS=true git push origin --tags'
