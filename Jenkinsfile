@@ -1,5 +1,5 @@
 node {
-  currentBuild.displayName = "${currentBuild.displayName} -> mofo"
+  currentBuild.displayName = "${currentBuild.displayName} -> mofos"
   currentBuild.description = "bebe"
 }
 
