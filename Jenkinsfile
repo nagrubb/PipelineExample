@@ -25,6 +25,7 @@ pipeline {
       agent { label 'gotham && builder' }
       steps {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
+        pushTag('abc')
         sh './build.sh'
         archiveArtifacts artifacts: 'output.bin'
         stash includes: 'output.bin', name: 'buildOutput'
