@@ -74,7 +74,7 @@ pipeline {
           usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
           sh '''
             git config credential.username ${env.GIT_USERNAME}
-            git config credential.helper "!echo password=\$GIT_PASSWORD; echo"
+            git config credential.helper '!echo password=\$GIT_PASSWORD; echo'
             GIT_ASKPASS=true git push origin --tags
             git checkout release/1.0
             git merge origin/${env.BRANCH_NAME}
