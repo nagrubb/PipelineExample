@@ -25,8 +25,10 @@ pipeline {
     stage('Test') {
       agent { label 'build && x64' }
       steps {
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'PENDING']]]])
         unstash 'output.bin'
         stash 'output2.bin'
+        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
       }
     }
   }
