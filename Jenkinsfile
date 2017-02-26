@@ -1,4 +1,5 @@
 node {
+  // Avoid doing a lot here as this is a critical section of the workspace
   currentBuild.displayName = "${currentBuild.displayName} -> mofos"
   currentBuild.description = "bebe"
 }
@@ -20,7 +21,7 @@ pipeline {
     stage('Build') {
       agent { label 'gotham && builder' }
       steps {
-        //Set GitHub Build commit status to pending
+        // Set GitHub Build commit status to pending
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -30,7 +31,7 @@ pipeline {
         archiveArtifacts artifacts: 'output.bin'
         stash includes: 'output.bin', name: 'buildOutput'
 
-        //Set GitHub Build commit status to success
+        // Set GitHub Build commit status to success
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -40,7 +41,7 @@ pipeline {
     stage('PerBuildTest') {
       agent { label 'gotham && tester' }
       steps {
-        //Set GitHub PerBuildTest commit status to pending
+        // Set GitHub PerBuildTest commit status to pending
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
@@ -49,7 +50,7 @@ pipeline {
         unstash 'buildOutput'
         sh './test.sh'
 
-        //Set GitHub PerBuildTest commit status to success
+        // Set GitHub PerBuildTest commit status to success
         step([$class: 'GitHubCommitStatusSetter',
           contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
           statusResultSource: [$class: 'ConditionalStatusResultSource',
