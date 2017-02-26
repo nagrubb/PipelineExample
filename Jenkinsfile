@@ -1,6 +1,8 @@
 node {
   echo currentBuild.displayName
   echo currentBuild.description
+  currentBuild.displayName = "bitch"
+  currentBuild.description = "bebe"
 }
 pipeline {
   agent none
