@@ -17,7 +17,7 @@ pipeline {
       }
     }
     stage('Build') {
-      agent { label 'ubuntu' }
+      agent { label 'gotham && builder' }
       steps {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
         sh './build.sh'
@@ -27,7 +27,7 @@ pipeline {
       }
     }
     stage('Test') {
-      agent { label 'build && x64' }
+      agent { label 'gotham && tester' }
       steps {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'PENDING']]]])
         unstash 'output.bin'
