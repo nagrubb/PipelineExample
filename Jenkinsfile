@@ -10,8 +10,10 @@ pipeline {
       agent { label 'master' }
       steps {
         echo 'Tagging Release Build'
-        currentBuild.displayName = "fooName"
-        currentBuild.description = "fooDescription"
+        node {
+          currentBuild.displayName = "fooName"
+          currentBuild.description = "fooDescription"
+        }
       }
     }
     stage('Build') {
