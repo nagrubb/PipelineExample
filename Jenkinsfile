@@ -1,5 +1,9 @@
 pipeline {
   agent none
+  node {
+    echo currentBuild.displayName
+    currentBuild.description = "Example"
+  }
   stages {
     stage('Tag') {
       when {
@@ -10,8 +14,6 @@ pipeline {
       agent { label 'master' }
       steps {
         echo 'Tagging Release Build'
-        echo currentBuild.displayName
-        currentBuild.description = "Example"
       }
     }
     stage('Build') {
