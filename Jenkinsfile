@@ -11,7 +11,7 @@ pipeline {
       steps {
         echo 'Tagging Release Build'
         echo currentBuild.displayName
-        echo currentBuild.description
+        currentBuild.description = "Example"
       }
     }
     stage('Build') {
