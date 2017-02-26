@@ -1,6 +1,6 @@
 node {
   echo currentBuild.displayName
-  echo curretnBuild.description
+  echo currentBuild.description
 }
 pipeline {
   agent none
