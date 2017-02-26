@@ -1,6 +1,7 @@
 pipeline {
   agent none
   stages {
+    currentBuild.displayName = "fooName"
     stage('Tag') {
       when {
         expression {
@@ -10,9 +11,6 @@ pipeline {
       agent { label 'master' }
       steps {
         echo 'Tagging Release Build'
-        step {
-          currentBuild.displayName = "fooName"
-        }
       }
     }
     stage('Build') {
