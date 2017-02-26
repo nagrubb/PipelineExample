@@ -1,9 +1,5 @@
 pipeline {
   agent none
-  node {
-    echo currentBuild.displayName
-    currentBuild.description = "Example"
-  }
   stages {
     stage('Tag') {
       when {
@@ -19,6 +15,7 @@ pipeline {
     stage('Build') {
       agent { label 'ubuntu' }
       steps {
+        currentBuild.setDescription("example")
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
         sh './build.sh'
         archiveArtifacts artifacts: 'output.bin'
