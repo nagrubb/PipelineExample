@@ -22,7 +22,7 @@ pipeline {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
         sh './build.sh'
         archiveArtifacts artifacts: 'output.bin'
-        stash 'output.bin'
+        stash includes: 'output.bin', name: 'buildOutput'
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Successfully built on Jenkins CI', state: 'SUCCESS']]]])
       }
     }
@@ -30,7 +30,7 @@ pipeline {
       agent { label 'gotham && tester' }
       steps {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'PENDING']]]])
-        unstash 'output.bin'
+        unstash 'buildOutput'
         sh './test.sh'
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
         step([$class: 'RobotPublisher', outputPath: '.', passThreshold: 0, unstableThreshold: 0, otherFiles: ""])
