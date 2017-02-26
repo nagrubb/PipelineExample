@@ -1,7 +1,7 @@
 node {
-  echo currentBuild.displayName
+  echo
   echo currentBuild.description
-  currentBuild.displayName = "bitch"
+  currentBuild.displayName = currentBuild.displayName + "-> bitch"
   currentBuild.description = "bebe"
 }
 pipeline {
