@@ -1,12 +1,8 @@
-def pushTag = { tag ->
-  echo tag
-}
-
-
 node {
   currentBuild.displayName = "${currentBuild.displayName} -> bitch"
   currentBuild.description = "bebe"
 }
+
 pipeline {
   agent none
   stages {
@@ -24,21 +20,42 @@ pipeline {
     stage('Build') {
       agent { label 'gotham && builder' }
       steps {
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
-        pushTag('abc')
+        # Set GitHub Build commit status to pending
+        step([$class: 'GitHubCommitStatusSetter',
+          contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
+          statusResultSource: [$class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', message: 'Building on Jenkins CI', state: 'PENDING']]]])
+
         sh './build.sh'
         archiveArtifacts artifacts: 'output.bin'
         stash includes: 'output.bin', name: 'buildOutput'
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Successfully built on Jenkins CI', state: 'SUCCESS']]]])
+
+        # Set GitHub Build commit status to success
+        step([$class: 'GitHubCommitStatusSetter',
+          contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build'],
+          statusResultSource: [$class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', message: 'Successfully built on Jenkins CI', state: 'SUCCESS']]]])
       }
     }
-    stage('Test') {
+    stage('PerBuildTest') {
       agent { label 'gotham && tester' }
       steps {
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'PENDING']]]])
+        # Set GitHub PerBuildTest commit status to pending
+        step([$class: 'GitHubCommitStatusSetter',
+          contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
+          statusResultSource: [$class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', message: 'Running PerBuildTest on Jenkins CI', state: 'PENDING']]]])
+
         unstash 'buildOutput'
         sh './test.sh'
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
+
+        # Set GitHub PerBuildTest commit status to success
+        step([$class: 'GitHubCommitStatusSetter',
+          contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'PerBuildTest'],
+          statusResultSource: [$class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
+
+        # Publish test results
         step([$class: 'RobotPublisher', outputPath: '.', passThreshold: 0, unstableThreshold: 0, otherFiles: ""])
       }
     }
