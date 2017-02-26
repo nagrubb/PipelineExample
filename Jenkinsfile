@@ -31,8 +31,9 @@ pipeline {
       steps {
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'PENDING']]]])
         unstash 'output.bin'
-        stash 'output2.bin'
+        sh './test.sh'
         step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Test'], statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: 'Testing on Jenkins CI', state: 'SUCCESS']]]])
+        step([$class: 'RobotPublisher', outputPath: '.', passThreshold: 0, unstableThreshold: 0, otherFiles: ""])
       }
     }
     stage('Merge') {
